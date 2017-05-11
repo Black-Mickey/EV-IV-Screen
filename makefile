@@ -16,7 +16,7 @@ all: objects
 	
 
 objects:
-	mkdir build
+	mkdir -p build
 	$(CC) $(CFLAGS) -c "src\main.c" -o "build\main.o"
 	$(CC) $(CFLAGS) -c "src\cb_execute.c" -o "build\cb_execute.o"
 	$(CC) $(CFLAGS) -c "src\sub_bg_init.c" -o "build\sub_bg_init.o"
