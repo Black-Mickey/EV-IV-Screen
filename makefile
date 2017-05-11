@@ -5,25 +5,29 @@ CC=arm-none-eabi-gcc
 
 ASFLAGS=-mthumb
 CFLAGS= -std=gnu11 -mthumb -mthumb-interwork -mcpu=arm7tdmi -fno-inline -mlong-calls -march=armv4t -Wall -Wextra -Wconversion -O2
-LDFLAGS=-z muldefs
+LDFLAGS=-z muldefs --relocatable
 
-OBJ := main.o cb_execute.o sub_bg_init.o task_loader.o tiles_load.o string_print.o decrypt_and_print.o load_icons.o task_02.o)
-OBJ := $(addprefix build/,$(OBJ))
+.PHONY: clean,objects
 
-$(shell mkdir -p build)
+all: objects
+	$(LD) $(LDFLAGS) -T linker.lsc -T bpre.ld -o "build\linked.o" "build\main.o" "build\cb_execute.o" "build\sub_bg_init.o" "build\task_loader.o" "build\tiles_load.o" "build\string_print.o" "build\decrypt_and_print.o" "build\load_icons.o" "build\task_02.o"
+	$(OBJCOPY) -O binary "build\linked.o" "main.bin"
+	armips insert.asm
+	@echo "Compilation Completed."
+	
 
-all: main.bin
-	@:
-
-main.bin: $(OBJ)
-	$(LD) $(LDFLAGS) -T linker.lsc -T bpre.ld -o build/linked $(OBJ)
-	$(OBJCOPY) -O binary build/linked $@
-
-build/%.o: src/%.c
-	$(CC) $(CFLAGS) -o $@ $<
-
-build/%.o: src/%.asm
-	$(AS) $(ASFLAGS) -o $@ $<
-
+objects:
+	mkdir build
+	$(CC) $(CFLAGS) -c "src\main.c" -o "build\main.o"
+	$(CC) $(CFLAGS) -c "src\cb_execute.c" -o "build\cb_execute.o"
+	$(CC) $(CFLAGS) -c "src\sub_bg_init.c" -o "build\sub_bg_init.o"
+	$(CC) $(CFLAGS) -c "src\task_loader.c" -o "build\task_loader.o"
+	$(CC) $(CFLAGS) -c "src\tiles_load.c" -o "build\tiles_load.o"
+	$(CC) $(CFLAGS) -c "src\string_print.c" -o "build\string_print.o"
+	$(CC) $(CFLAGS) -c "src\decrypt_and_print.c" -o "build\decrypt_and_print.o"
+	$(AS) $(ASFLAGS) -c "src\load_icons.s" -o "build\load_icons.o"
+	$(CC) $(CFLAGS) -c "src\task_02.c" -o "build\task_02.o"
+	
 clean:
-	rm -f $(OBJ) build/linked
+	rm build//*
+	rm main.bin
