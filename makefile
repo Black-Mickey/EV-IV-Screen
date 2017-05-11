@@ -11,7 +11,6 @@ LDFLAGS=-z muldefs --relocatable
 
 all: objects
 	$(LD) $(LDFLAGS) -T linker.lsc -T bpre.ld -o "build\linked.o" "build\main.o" "build\cb_execute.o" "build\sub_bg_init.o" "build\task_loader.o" "build\tiles_load.o" "build\string_print.o" "build\decrypt_and_print.o" "build\load_icons.o" "build\task_02.o"
-	$(OBJCOPY) -O binary "build\linked.o" "main.bin"
 	armips insert.asm
 	@echo "Compilation Completed."
 	

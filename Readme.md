@@ -1,6 +1,6 @@
-#EV-IV-Screen
+# EV-IV-Screen
 
-*How to use
+* How to use
 1. Make sure that you have Devkitarm and make installed. armips v0.8/0.9 is required.     
 2. Download this repo.   
 3. Assign the free space you want to use in insert.asm.   
