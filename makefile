@@ -29,4 +29,3 @@ objects:
 	
 clean:
 	rm build//*
-	rm main.bin
