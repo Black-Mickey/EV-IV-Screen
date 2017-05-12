@@ -10,13 +10,14 @@ LDFLAGS=-z muldefs --relocatable
 .PHONY: clean,objects
 
 all: objects
-	$(LD) $(LDFLAGS) -T linker.lsc -T bpre.ld -o "build\linked.o" "build\main.o" "build\cb_execute.o" "build\sub_bg_init.o" "build\task_loader.o" "build\tiles_load.o" "build\string_print.o" "build\decrypt_and_print.o" "build\load_icons.o" "build\task_02.o"
+	$(LD) $(LDFLAGS) -T linker.lsc -T bpre.ld -o "build\linked.o" "build\main.o" "build\cb_execute.o" "build\sub_bg_init.o" "build\task_loader.o" "build\tiles_load.o" "build\string_print.o" "build\decrypt_and_print.o" "build\load_icons.o" "build\task_02.o" "build\resource.o"
 	armips insert.asm
 	@echo "Compilation Completed."
 	
 
 objects:
 	mkdir -p build
+	$(CC) $(CFLAGS) -c "src\resource.c" -o "build\resource.o"
 	$(CC) $(CFLAGS) -c "src\main.c" -o "build\main.o"
 	$(CC) $(CFLAGS) -c "src\cb_execute.c" -o "build\cb_execute.o"
 	$(CC) $(CFLAGS) -c "src\sub_bg_init.c" -o "build\sub_bg_init.o"
